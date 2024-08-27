@@ -75,6 +75,18 @@ java {
 //    }
 //}
 
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+// https://github.com/google/ksp/issues/1288#issuecomment-1587376988
+kotlin {
+    jvmToolchain(21)
+}
+
+
 dependencies {
     implementation(libs.kotlinx.coroutines.core)
 

@@ -119,13 +119,15 @@ android {
 }
 
 compose.desktop {
+
     application {
         mainClass = "pl.org.seva.multiplatform.MainKt"
 
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.AppImage)
             packageName = "pl.org.seva.multiplatform"
             packageVersion = "1.0.0"
         }
     }
+
 }

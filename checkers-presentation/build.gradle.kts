@@ -77,6 +77,11 @@ java {
     targetCompatibility = JavaVersion.VERSION_21
 }
 
+// https://github.com/google/ksp/issues/1288#issuecomment-1587376988
+kotlin {
+    jvmToolchain(21)
+}
+
 dependencies {
     implementation(project(":checkers-domain"))
 

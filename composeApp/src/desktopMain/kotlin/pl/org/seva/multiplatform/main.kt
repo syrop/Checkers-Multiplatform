@@ -2,6 +2,8 @@ package pl.org.seva.multiplatform
 
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import org.koin.core.logger.Level
 import org.koin.java.KoinJavaComponent.inject
 import org.koin.mp.KoinPlatform.startKoin
@@ -28,6 +30,7 @@ fun main() = application {
         title = "Checkers Multiplatform",
     ) {
         App(presentation, piecesPresentationToUiMapper)
+        presentation.reset(CoroutineScope(Dispatchers.Main.immediate))
     }
 
 }
