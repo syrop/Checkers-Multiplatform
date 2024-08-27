@@ -31,3 +31,8 @@ dependencyResolutionManagement {
 include(":composeApp")
 include(":server")
 include(":shared")
+include(":checkers-presentation")
+include(":checkers-domain")
+include(":lib")
+include(":checkers-datasource")
+include(":checkers-data")
