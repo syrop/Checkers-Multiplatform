@@ -24,4 +24,5 @@ val uiModule = module {
         ) { UseCaseExecutor() }
     }
     singleOf(::PiecesPresentationToUiMapper)
+
 }

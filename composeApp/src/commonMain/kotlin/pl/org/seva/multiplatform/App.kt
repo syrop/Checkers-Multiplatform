@@ -9,6 +9,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
+import checkersmultiplatform.composeapp.generated.resources.Res
+import checkersmultiplatform.composeapp.generated.resources.black_won
+import checkersmultiplatform.composeapp.generated.resources.white_won
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import pl.org.seva.checkers.presentation.GamePresentation
 import pl.org.seva.multiplatform.ui.mapper.PiecesPresentationToUiMapper
@@ -22,14 +26,27 @@ fun App(
     presentation: GamePresentation,
     piecesPresentationToUiMapper: PiecesPresentationToUiMapper
 ) {
+    val coroutineScope = rememberCoroutineScope()
+
     MaterialTheme {
         Board()
         Pieces(
             piecesPresentationToUiMapper.toUi(presentation.viewState.collectAsState().value.pieces),
-            onStoreState = {},
-            onValidMove = { _, _, _, _, _, _, _ ->
+            onStoreState = {
+                presentation.storeState()
             },
-            onInvalidMove = {}
+            onValidMove = { x1, y1, beatingX, beatingY, x2, y2, isKing ->
+                presentation.removeWhite(x1, y1)
+                presentation.removeBlack(beatingX to beatingY)
+                presentation.addWhite(x2, y2, isKing, coroutineScope)
+                if (presentation.viewState.value.pieces.blackMen.toSet().isEmpty() &&
+                    presentation.viewState.value.pieces.blackKings.toSet().isEmpty()) {
+                    presentation.setWhiteWon()
+                }
+            },
+            onInvalidMove = {
+                presentation.restoreState()
+            }
         )
         if (presentation.viewState.collectAsState().value.isLoading) {
             Box(
@@ -45,7 +62,7 @@ fun App(
                 modifier = Modifier.fillMaxSize()
             ) {
                 Text(
-                    text = "White Won",
+                    text = stringResource(Res.string.white_won),
                     fontSize = 34.sp,
                 )
             }
@@ -56,24 +73,11 @@ fun App(
                 modifier = Modifier.fillMaxSize()
             ) {
                 Text(
-                    text = "Black Won",
+                    text = stringResource(Res.string.black_won),
                     fontSize = 34.sp,
                 )
             }
         }
     }
-//        var showContent by remember { mutableStateOf(false) }
-//        Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-//            Button(onClick = { showContent = !showContent }) {
-//                Text("Click me!")
-//            }
-//            AnimatedVisibility(showContent) {
-//                val greeting = remember { Greeting().greet() }
-//                Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-//                    Image(painterResource(Res.drawable.compose_multiplatform), null)
-//                    Text("Compose: $greeting")
-//                }
-//            }
-//        }
 
 }
